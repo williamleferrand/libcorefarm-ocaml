@@ -1,0 +1,35 @@
+COREFARM API 
+
+WORK FLOW 
+
+1) Create a new job 
+
+   GET /new_job : application (= "yafaray"), date (= Unix.time (), the number of seconds since 1 jan 1970), isconfidential (= "true")
+               returns a job_id
+
+
+2) Upload the job files : textures and the exported xml file corresponding to the scene 
+
+   POST in the S3 bucket corefarm-data , with key job_id/filename 
+    
+   Just send an .tar.gz archive containing all the textures and the xml file 
+
+3) Starting the job :
+
+   GET /start_job : date (= Unix.time ()), ghz (= number of ghz requested for the job, default 50), input, job_id
+
+
+   the input is the following string : "$thexmlfile$ i" where i = 0 if the output is tga and i = 1 if the output is exr
+
+
+
+Each method takes two more get arguments :
+
+login : which is the corefarm login
+signature, computed with the following algorithm: 
+ 	   * order all the GET parameters alphabetically
+           * concat the parameters k1=v1, k2=v2 etc : k1=v1k2=v2k3=v3
+	   * append the login and the private key : k1=v1k2=v2k3=v3loginkey
+           * compute a sha256 of the resulting string
+
+ 

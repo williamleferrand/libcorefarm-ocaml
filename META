@@ -1,0 +1,5 @@
+name="corefarm-ocsigen"
+version="0.0.1"
+description="OCaml client for the Corefarm REST API"
+requires="cryptokit ocsigen json-wheel"
+archive(byte) = "corefarm_ocsigen.cma"
